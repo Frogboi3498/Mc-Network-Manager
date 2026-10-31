@@ -1,6 +1,6 @@
 import SwiftUI
 import AppKit
-import SwiftTerm
+@preconcurrency import SwiftTerm
 
 // MARK: - Pane (owns the terminal view and its SSH session)
 
@@ -23,10 +23,15 @@ final class TerminalPane: NSObject, TerminalViewDelegate, Identifiable {
 
     func connect() {
         connection?.stop()
-        let sender = view.feedSender
+        
+        // Fix: Use the TerminalView's native methods directly rather than looking for a feedSender object.
         let conn = PTYConnection(
-            onOutput: { bytes in sender.feed(byteArray: bytes[...]) },
-            onStatus: { text in sender.feed(text: text) }
+            onOutput: { [weak self] bytes in 
+                self?.view.feed(bytes: bytes) 
+            },
+            onStatus: { [weak self] text in 
+                self?.view.feed(text: text) 
+            }
         )
         connection = conn
         // The real size arrives through sizeChanged once the view has a frame.

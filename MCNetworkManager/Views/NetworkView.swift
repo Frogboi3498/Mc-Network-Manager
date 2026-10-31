@@ -166,6 +166,8 @@ struct NetworkView: View {
 
 // MARK: - Edit Servers Sheet (manage the whole set)
 
+// MARK: - Edit Servers Sheet (manage the whole set)
+
 private struct EditServersSheet: View {
     @Environment(AppModel.self) private var app
     @Environment(\.dismiss) private var dismiss
@@ -175,67 +177,78 @@ private struct EditServersSheet: View {
         NavigationStack {
             List {
                 ForEach($app.vault.plan.servers) { $server in
-                    VStack(alignment: .leading, spacing: 8) {
-                        TextField("Name", text: $server.name)
-                        HStack {
-                            Picker("Mode", selection: $server.gameMode) {
-                                ForEach(GameMode.allCases) { Text($0.title).tag($0) }
-                            }
-                            TextField("Port", value: $server.port, format: .number.grouping(.never))
-                                .frame(width: 80)
+                    HStack {
+                        VStack(alignment: .leading) {
+                            TextField("Server Name", text: $server.name)
+                                .font(.headline)
+                            Text("Port: \(server.port) • \(server.gameMode.rawValue.capitalized)")
+                                .font(.subheadline)
+                                .foregroundStyle(.secondary)
                         }
+                        Spacer()
+                        
+                        // Inline delete button for clean macOS UX
+                        Button(role: .destructive) {
+                            deleteServer(server)
+                        } label: {
+                            Image(systemName: "trash")
+                        }
+                        .buttonStyle(.borderless)
+                        .help("Delete \(server.name)")
                     }
                     .padding(.vertical, 4)
+                    // Context menu support for right-click deletion
+                    .contextMenu {
+                        Button(role: .destructive) {
+                            deleteServer(server)
+                        } label: {
+                            Label("Delete Server", systemImage: "trash")
+                        }
+                    }
                 }
                 .onDelete { indexSet in
                     app.vault.plan.servers.remove(atOffsets: indexSet)
-                }
-                .onMove { from, to in
-                    app.vault.plan.servers.move(fromOffsets: from, toOffset: to)
-                }
-
-                Section {
-                    Button {
-                        addServer()
-                    } label: {
-                        Label("Add server", systemImage: "plus")
-                    }
-                    Button("Use Lobby + Survival + Creative") {
-                        useTemplate()
-                    }
                 }
             }
             .navigationTitle("Edit Servers")
             .toolbar {
                 ToolbarItem(placement: .cancellationAction) {
-                    Button("Done") { dismiss() }
+                    Button("Done") {
+                        dismiss()
+                    }
                 }
                 ToolbarItem(placement: .primaryAction) {
-                    EditButton()
+                    Button {
+                        addBlankServer()
+                    } label: {
+                        Label("Add Server", systemImage: "plus")
+                    }
                 }
             }
+            .frame(minWidth: 400, minHeight: 300)
         }
-        .frame(minWidth: 420, minHeight: 380)
     }
 
-    private func addServer() {
+    private func deleteServer(_ server: ServerPlan) {
+        app.vault.plan.servers.removeAll(where: { $0.id == server.id })
+    }
+
+    private func addBlankServer() {
         let used = Set(app.vault.plan.servers.map(\.port))
         var port = 30066
         while used.contains(port) { port += 1 }
         let node = app.vault.nodes.first?.id
-        app.vault.plan.servers.append(
-            ServerPlan(name: "server\(app.vault.plan.servers.count + 1)", gameMode: .survival, port: port, memoryMB: 2048, nodeID: node)
+        let newServer = ServerPlan(
+            name: "server\(app.vault.plan.servers.count + 1)",
+            gameMode: .survival,
+            port: port,
+            memoryMB: 2048,
+            nodeID: node
         )
-    }
-
-    private func useTemplate() {
-        let node = app.vault.nodes.first?.id
-        var template = NetworkPlan.template()
-        template.servers = template.servers.map { var s = $0; s.nodeID = node; return s }
-        app.vault.plan.servers = template.servers
-        app.vault.plan.proxyNodeID = app.vault.plan.proxyNodeID ?? node
+        app.vault.plan.servers.append(newServer)
     }
 }
+
 
 // MARK: - Server Editor
 
