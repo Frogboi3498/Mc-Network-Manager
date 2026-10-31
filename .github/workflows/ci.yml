@@ -6,18 +6,57 @@ on:
 
 jobs:
   macos-build:
-    name: Build macOS app
+    name: Build macOS DMG
     runs-on: macos-15
     steps:
       - uses: actions/checkout@v4
-      - name: Build
+
+      - name: Build Release app
         run: |
           xcodebuild build \
             -project MCNetworkManager.xcodeproj \
             -scheme MCNetworkManager \
+            -configuration Release \
             -destination 'platform=macOS' \
+            -derivedDataPath build/DerivedData \
             -skipPackagePluginValidation \
             CODE_SIGNING_ALLOWED=NO
+
+      - name: Package DMG with app and Applications alias
+        shell: bash
+        run: |
+          set -euxo pipefail
+
+          APP_PATH="$PWD/build/DerivedData/Build/Products/Release/MCNetworkManager.app"
+          if [ ! -d "$APP_PATH" ]; then
+            echo "Built app not found at $APP_PATH" >&2
+            find "$PWD" -maxdepth 6 -name '*.app' | head -50 >&2
+            exit 1
+          fi
+
+          DMG_STAGE_DIR="$RUNNER_TEMP/mcnm-dmg"
+          DMG_PATH="$RUNNER_TEMP/MCNetworkManager.dmg"
+          rm -rf "$DMG_STAGE_DIR" "$DMG_PATH"
+          mkdir -p "$DMG_STAGE_DIR"
+
+          cp -R "$APP_PATH" "$DMG_STAGE_DIR/"
+          ln -s /Applications "$DMG_STAGE_DIR/Applications"
+
+          hdiutil create \
+            -srcfolder "$DMG_STAGE_DIR" \
+            -volname "MC Network Manager" \
+            -fs HFS+ \
+            -ov \
+            -format UDZO \
+            "$DMG_PATH"
+
+          ls -lh "$DMG_PATH"
+
+      - name: Upload DMG artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: MCNetworkManager.dmg
+          path: ${{ runner.temp }}/MCNetworkManager.dmg
 
   project-file:
     name: Project file check
