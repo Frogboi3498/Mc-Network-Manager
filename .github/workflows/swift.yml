@@ -8,13 +8,12 @@ on:
 
 jobs:
   build:
-    # We must use macos to run Xcode builds
     runs-on: macos-latest
 
     steps:
     - name: Checkout Repository
       uses: actions/checkout@v4
 
-    - name: Build App
-      # This cleans and builds your app without requiring code signing certificates
-      run: xcodebuild clean build -workspace *.xcworkspace -scheme "YourAppName" -destination 'platform=iOS Simulator,name=iPhone 16' CODE_SIGNING_ALLOWED=NO || xcodebuild clean build -project *.xcodeproj -scheme "YourAppName" -destination 'platform=iOS Simulator,name=iPhone 16' CODE_SIGNING_ALLOWED=NO
+    - name: Build Framework
+      # This explicitly uses your project name and the correct scheme
+      run: xcodebuild clean build -project MCNetworkManager.xcodeproj -scheme "MCNetworkManager" -destination 'platform=iOS Simulator,name=iPhone 16' CODE_SIGNING_ALLOWED=NO
