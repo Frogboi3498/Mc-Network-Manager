@@ -27,7 +27,7 @@
          // Fix: Use the TerminalView's native methods directly rather than looking for a feedSender object.
          let conn = PTYConnection(
              onOutput: { [weak self] bytes in 
-                 self?.view.feed(ArraySlice(bytes))
+                 self?.view.feed(byteArray: ArraySlice(bytes))
              },
              onStatus: { [weak self] text in 
                  self?.view.feed(text: text) 
@@ -190,4 +190,3 @@
          .frame(maxWidth: .infinity, maxHeight: .infinity)
      }
  }
- 
