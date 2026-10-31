@@ -1,6 +1,4 @@
 import SwiftUI
-import Citadel
-import NIOCore
 
 // MARK: - Remote file entry
 
@@ -50,26 +48,41 @@ final class FileBrowserModel {
         defer { isLoading = false }
 
         do {
-            let client = try await SSHService.connect(node)
-            defer { Task { try? await client.close() } }
-            let sftp = try await client.openSFTP()
-            defer { Task { try? await sftp.close() } }
-
-            // listDirectory returns [SFTPPathComponent] or similar in current Citadel
-            let listing = try await sftp.listDirectory(atPath: currentPath)
+            // Use ls -la via SSH — avoids fragile SFTP type differences across Citadel versions
+            let path = currentPath.replacingOccurrences(of: "'", with: "'\\''")
+            let cmd = "ls -la --time-style=long-iso '\(path)' 2>/dev/null || ls -la '\(path)'"
+            let output = try await SSHService.run(node, cmd, timeout: 20)
 
             var result: [RemoteEntry] = []
-            for component in listing {
-                let name = component.filename
-                if name == "." || name == ".." { continue }
+            for line in output.split(separator: "\n", omittingEmptySubsequences: false).map(String.init) {
+                let trimmed = line.trimmingCharacters(in: .whitespaces)
+                if trimmed.isEmpty || trimmed.hasPrefix("total ") { continue }
 
-                // attributes.isDirectory is the usual flag
-                let isDir = component.attributes.isDirectory == true
-                    || (component.attributes.permissions?.isDirectory ?? false)
+                // Typical ls -la line:
+                // drwxr-xr-x  2 user group  4096 2024-01-01 12:00 dirname
+                // -rw-r--r--  1 user group   123 2024-01-01 12:00 filename
+                let parts = trimmed.split(separator: " ", omittingEmptySubsequences: true).map(String.init)
+                guard parts.count >= 8 else { continue }
 
-                let size = Int64(component.attributes.size ?? 0)
+                let perms = parts[0]
+                let isDir = perms.hasPrefix("d")
+                // size is usually index 4
+                let size = Int64(parts[4]) ?? 0
+
+                // name is everything after the date/time fields
+                // With --time-style=long-iso: date at -3, time at -2, name at -1 (or more if spaces)
+                // Fallback: last field
+                let name: String
+                if parts.count >= 8 {
+                    // Join from index 7 onward to support names with spaces
+                    name = parts[7...].joined(separator: " ")
+                } else {
+                    name = parts.last ?? ""
+                }
+
+                if name == "." || name == ".." || name.isEmpty { continue }
+
                 let fullPath = currentPath == "/" ? "/\(name)" : "\(currentPath)/\(name)"
-
                 result.append(RemoteEntry(
                     name: name,
                     path: fullPath,
@@ -164,7 +177,7 @@ struct FilesView: View {
                     ContentUnavailableView(
                         "Choose a node",
                         systemImage: "server.rack",
-                        description: Text("Select one of your nodes above to browse its files over SFTP.")
+                        description: Text("Select one of your nodes above to browse its files.")
                     )
                 } else if browser.isLoading && browser.entries.isEmpty {
                     ProgressView("Loading…")
@@ -185,12 +198,6 @@ struct FilesView: View {
                     Table(browser.entries, selection: $browser.selectedIDs) {
                         TableColumn("Name") { entry in
                             Label(entry.name, systemImage: entry.icon)
-                                .onTapGesture(count: 2) {
-                                    if entry.isDirectory {
-                                        browser.enter(entry)
-                                        Task { await browser.load(nodes: app.vault.nodes) }
-                                    }
-                                }
                         }
                         TableColumn("Size") { entry in
                             Text(entry.isDirectory ? "—" : ByteCountFormatter.string(fromByteCount: entry.size, countStyle: .file))
@@ -246,18 +253,17 @@ struct FilesView: View {
               let node = app.vault.nodes.first(where: { $0.id == nodeID }) else { return }
         statusMessage = "Downloading \(entry.name)…"
         do {
-            let client = try await SSHService.connect(node)
-            defer { Task { try? await client.close() } }
-            let sftp = try await client.openSFTP()
-            defer { Task { try? await sftp.close() } }
-
-            let buffer = try await sftp.withFile(filePath: entry.path, flags: .read) { file in
-                try await file.readToEnd()
+            // Read file via SSH + base64 to avoid binary issues
+            let path = entry.path.replacingOccurrences(of: "'", with: "'\\''")
+            let cmd = "base64 '\(path)'"
+            let b64 = try await SSHService.run(node, cmd, timeout: 60)
+            guard let data = Data(base64Encoded: b64.trimmingCharacters(in: .whitespacesAndNewlines), options: .ignoreUnknownCharacters) else {
+                statusMessage = "Download failed: could not decode file data"
+                return
             }
-
             let downloads = FileManager.default.urls(for: .downloadsDirectory, in: .userDomainMask)[0]
             let dest = downloads.appendingPathComponent(entry.name)
-            try Data(buffer: buffer).write(to: dest)
+            try data.write(to: dest)
             statusMessage = "Saved to Downloads/\(entry.name)"
         } catch {
             statusMessage = "Download failed: \(error.localizedDescription)"
