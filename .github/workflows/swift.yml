@@ -14,6 +14,6 @@ jobs:
     - name: Checkout Repository
       uses: actions/checkout@v4
 
-    - name: Build Framework
-      # Changed destination from iOS Simulator to macOS
+    - name: Build Framework for macOS
+      # Targets macOS directly to resolve platform discrepancies
       run: xcodebuild clean build -project MCNetworkManager.xcodeproj -scheme "MCNetworkManager" -destination 'platform=macOS' CODE_SIGNING_ALLOWED=NO
