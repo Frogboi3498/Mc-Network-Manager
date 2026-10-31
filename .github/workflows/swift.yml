@@ -1,4 +1,4 @@
-name: Xcode Build and Archive
+name: Package macOS Application
 
 on:
   push:
@@ -17,22 +17,40 @@ jobs:
     - name: Build Framework for macOS
       run: xcodebuild clean build -project MCNetworkManager.xcodeproj -scheme "MCNetworkManager" -destination 'platform=macOS' -skipPackagePluginValidation CODE_SIGNING_ALLOWED=NO
 
-    - name: Locate and Package Build Product
+    - name: Stage Packaging Payload
       run: |
-        # Find where Xcode placed the compiled framework output
+        # 1. Fetch the exact location where Xcode compiled your binaries
         BUILD_DIR=$(xcodebuild -project MCNetworkManager.xcodeproj -scheme "MCNetworkManager" -showBuildSettings | grep -m 1 "BUILT_PRODUCTS_DIR" | awk '{print $3}')
         
-        echo "Built products directory is at: $BUILD_DIR"
+        # 2. Create staging directories for our packaging scripts
+        mkdir -p ./dmg_payload
+        mkdir -p ./pkg_root/Applications
+        mkdir -p ./dist_output
         
-        # Create a directory to stage our download files
-        mkdir -p ./download-payload
-        
-        # Copy everything compiled (frameworks, binaries) into our folder
-        cp -R "$BUILD_DIR/" ./download-payload/
+        # 3. Stage files for the DMG container and the PKG installer payload
+        cp -R "$BUILD_DIR/" ./dmg_payload/
+        cp -R "$BUILD_DIR/" ./pkg_root/Applications/
 
-    - name: Upload Build Artifact for Download
+    - name: Build .dmg Installer
+      run: |
+        # Create a compressed read-only production DMG package container
+        hdiutil create -volname "MCNetworkManager-Installer" \
+                       -srcfolder ./dmg_payload \
+                       -ov -format UDZO \
+                       ./dist_output/MCNetworkManager.dmg
+
+    - name: Build .pkg Installer
+      run: |
+        # Create a flat component package that installs directly into the /Applications system folder
+        pkgbuild --root ./pkg_root \
+                 --identifier "com.mcnetworkmanager.app" \
+                 --version "1.0.0" \
+                 --install-location / \
+                 ./dist_output/MCNetworkManager.pkg
+
+    - name: Upload Packaged Installers
       uses: actions/upload-artifact@v4
       with:
-        name: MCNetworkManager-macOS-Build
-        path: ./download-payload/
+        name: MCNetworkManager-Installers
+        path: ./dist_output/
         if-no-files-found: error
