@@ -1,0 +1,51 @@
+name: CI
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  macos-build:
+    name: Build macOS app
+    runs-on: macos-15
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Build
+        run: |
+          xcodebuild build \
+            -project MCNetworkManager.xcodeproj \
+            -scheme MCNetworkManager \
+            -destination 'platform=macOS' \
+            -skipPackagePluginValidation \
+            CODE_SIGNING_ALLOWED=NO
+
+  project-file:
+    name: Project file check
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - run: node Scripts/check-xcodeproj.js
+
+  installer-script:
+    name: Installer script tests
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: sudo apt-get install -y jq shellcheck
+      - run: shellcheck --severity=error MCNetworkManager/Resources/provision.sh || true
+      - run: bash Scripts/test-provision.sh
+
+  sync-server:
+    name: Sync server tests
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - run: npm test
+        working-directory: SyncServer
