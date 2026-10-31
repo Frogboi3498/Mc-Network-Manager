@@ -15,5 +15,5 @@ jobs:
       uses: actions/checkout@v4
 
     - name: Build Framework for macOS
-      # Targets macOS directly to resolve platform discrepancies
-      run: xcodebuild clean build -project MCNetworkManager.xcodeproj -scheme "MCNetworkManager" -destination 'platform=macOS' CODE_SIGNING_ALLOWED=NO
+      # Appended -skipPackagePluginValidation flag to explicitly permit compilation blocks inside SwiftTerm
+      run: xcodebuild clean build -project MCNetworkManager.xcodeproj -scheme "MCNetworkManager" -destination 'platform=macOS' -skipPackagePluginValidation CODE_SIGNING_ALLOWED=NO
