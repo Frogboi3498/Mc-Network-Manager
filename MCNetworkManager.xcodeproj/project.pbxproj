@@ -1,0 +1,441 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 56;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		095B43D2BD277BA475E241A5 /* InstallView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD45C0C566E77BDC376A4DDC; /* InstallView.swift */};
+		0B54983A7186039D8FB8883E /* Citadel in Frameworks */ = {isa = PBXBuildFile; productRef = 350875B4080A184826DF5BBC; /* Citadel */};
+		103313D91574F36015782CEC /* NodesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B7057E71B9B4692FAD4CDCE; /* NodesView.swift */};
+		1689FC56C7FF14885483DC6E /* Provisioner.swift in Sources */ = {isa = PBXBuildFile; fileRef = 407D6C328F4FCDCB90AD9FF9; /* Provisioner.swift */};
+		21490E5F48E646FECEA60DA3 /* DashboardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E700F6EDECB6F15E0F31D7A9; /* DashboardView.swift */};
+		29A799BD5CB8CA3612C29E81 /* SSHService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48BC74B1FB07501AE83EB2E1; /* SSHService.swift */};
+		2FC44A448EDAEE01754891A3 /* MinecraftPing.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BE8B3F7A296C670500C5863; /* MinecraftPing.swift */};
+		4B76B99D72DD19489820D148 /* provision.sh in Resources */ = {isa = PBXBuildFile; fileRef = 39FB87305A6CFDCCB2493FED; /* provision.sh */};
+		4F876DB0DC724492437DB459 /* VaultCrypto.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B2D7D2802DD428B287906F1; /* VaultCrypto.swift */};
+		5C5351A3E5F6A4B8F677ADC6 /* Models.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8EFC68BD5847CDDC18E14122; /* Models.swift */};
+		618E710A115E6CA2C9E5893B /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9E0C554030EF8C81A9ADCCE3; /* ContentView.swift */};
+		657FB64554870F52ABF232E0 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 9861ACFC63F27CAD0B9789FE; /* Assets.xcassets */};
+		6AEB04072003C3130BACD7CE /* SwiftTerm in Frameworks */ = {isa = PBXBuildFile; productRef = BA636B2CBE5525F98BEDD698; /* SwiftTerm */};
+		7465E82D46B236A8D823869E /* NIOSSH in Frameworks */ = {isa = PBXBuildFile; productRef = 9C0FAD7ED8572BCEE7EA12E9; /* NIOSSH */};
+		8AF7FDF0CB42F71CFFF00101 /* SyncClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A118B48B3544A613B2C0AF6; /* SyncClient.swift */};
+		A5195774FA3AF9FFD6147EC9 /* Keychain.swift in Sources */ = {isa = PBXBuildFile; fileRef = B36C36A62A5933E98CCCC523; /* Keychain.swift */};
+		B285590E34A2F7EB083B4E23 /* MCNetworkManagerApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB0352F1D6793B92EF71B7F2; /* MCNetworkManagerApp.swift */};
+		B5EC062792C62B7F54E52D95 /* AccountView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CF8D5B876B3289E8EB99B58; /* AccountView.swift */};
+		B6ABC5F64AC10F1036CCB4D9 /* TerminalsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08F34CAEEDE32C00E562DA8D; /* TerminalsView.swift */};
+		C8BBBE659152666B9BF21A5C /* Monitor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13428E1BA181E3E159AA4B3F; /* Monitor.swift */};
+		CD3DE27D0C96A6FA28A6C9F4 /* Clipboard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9BBC50701B70EE1B11C171E8; /* Clipboard.swift */};
+		CE8AF37646E7ABC9390613F3 /* NetworkView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 09ADB83BC6E9050779407C89; /* NetworkView.swift */};
+		EC0D5B563685FE60D77CA8F5 /* AppModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 335ECD097AF13526E408F034; /* AppModel.swift */};
+		F4AC26EC647F616756DC183E /* NIOCore in Frameworks */ = {isa = PBXBuildFile; productRef = 646C3155195D423011424BC3; /* NIOCore */};
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		08F34CAEEDE32C00E562DA8D /* TerminalsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TerminalsView.swift; sourceTree = "<group>";};
+		09ADB83BC6E9050779407C89 /* NetworkView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkView.swift; sourceTree = "<group>";};
+		13428E1BA181E3E159AA4B3F /* Monitor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Monitor.swift; sourceTree = "<group>";};
+		1B7057E71B9B4692FAD4CDCE /* NodesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NodesView.swift; sourceTree = "<group>";};
+		2EAF754C4665B5F513A769DB /* MCNetworkManager.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = MCNetworkManager.entitlements; sourceTree = "<group>";};
+		335ECD097AF13526E408F034 /* AppModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppModel.swift; sourceTree = "<group>";};
+		39FB87305A6CFDCCB2493FED /* provision.sh */ = {isa = PBXFileReference; lastKnownFileType = text.script.sh; path = provision.sh; sourceTree = "<group>";};
+		3BE8B3F7A296C670500C5863 /* MinecraftPing.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MinecraftPing.swift; sourceTree = "<group>";};
+		407D6C328F4FCDCB90AD9FF9 /* Provisioner.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Provisioner.swift; sourceTree = "<group>";};
+		48BC74B1FB07501AE83EB2E1 /* SSHService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SSHService.swift; sourceTree = "<group>";};
+		57BB6AE2844BE087895267E0 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>";};
+		5B2D7D2802DD428B287906F1 /* VaultCrypto.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VaultCrypto.swift; sourceTree = "<group>";};
+		5CF8D5B876B3289E8EB99B58 /* AccountView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountView.swift; sourceTree = "<group>";};
+		7A118B48B3544A613B2C0AF6 /* SyncClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SyncClient.swift; sourceTree = "<group>";};
+		8978FDA03FA684199AB7FC4E /* MCNetworkManager.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MCNetworkManager.app; sourceTree = BUILT_PRODUCTS_DIR;};
+		8EFC68BD5847CDDC18E14122 /* Models.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Models.swift; sourceTree = "<group>";};
+		9861ACFC63F27CAD0B9789FE /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>";};
+		9BBC50701B70EE1B11C171E8 /* Clipboard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Clipboard.swift; sourceTree = "<group>";};
+		9E0C554030EF8C81A9ADCCE3 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>";};
+		AD45C0C566E77BDC376A4DDC /* InstallView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InstallView.swift; sourceTree = "<group>";};
+		B36C36A62A5933E98CCCC523 /* Keychain.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Keychain.swift; sourceTree = "<group>";};
+		CB0352F1D6793B92EF71B7F2 /* MCNetworkManagerApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MCNetworkManagerApp.swift; sourceTree = "<group>";};
+		E700F6EDECB6F15E0F31D7A9 /* DashboardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DashboardView.swift; sourceTree = "<group>";};
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		1C547B14509C4070E364B965 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				0B54983A7186039D8FB8883E, /* Citadel in Frameworks */
+				6AEB04072003C3130BACD7CE, /* SwiftTerm in Frameworks */
+				F4AC26EC647F616756DC183E, /* NIOCore in Frameworks */
+				7465E82D46B236A8D823869E, /* NIOSSH in Frameworks */
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		2ACB4F79C857A15BD8D28E20 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				5CF8D5B876B3289E8EB99B58, /* AccountView.swift */
+				9E0C554030EF8C81A9ADCCE3, /* ContentView.swift */
+				E700F6EDECB6F15E0F31D7A9, /* DashboardView.swift */
+				AD45C0C566E77BDC376A4DDC, /* InstallView.swift */
+				09ADB83BC6E9050779407C89, /* NetworkView.swift */
+				1B7057E71B9B4692FAD4CDCE, /* NodesView.swift */
+				08F34CAEEDE32C00E562DA8D, /* TerminalsView.swift */
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		3A385EBE73B1109F1A484187 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				39FB87305A6CFDCCB2493FED, /* provision.sh */
+				9861ACFC63F27CAD0B9789FE, /* Assets.xcassets */
+			);
+			path = Resources;
+			sourceTree = "<group>";
+		};
+		3F402FA57D1E2C58E18A4993 /*  */ = {
+			isa = PBXGroup;
+			children = (
+				5B66BF760D2D23A851530FA3, /* MCNetworkManager */
+				E7F3EA3824E2DA681934A787, /* Products */
+			);
+			sourceTree = "<group>";
+		};
+		5B66BF760D2D23A851530FA3 /* MCNetworkManager */ = {
+			isa = PBXGroup;
+			children = (
+				CB0352F1D6793B92EF71B7F2, /* MCNetworkManagerApp.swift */
+				BF7A3AAF02871706FF49CC90, /* Models */
+				B6FF67EF6E71AED71D960BD1, /* Services */
+				2ACB4F79C857A15BD8D28E20, /* Views */
+				3A385EBE73B1109F1A484187, /* Resources */
+				57BB6AE2844BE087895267E0, /* Info.plist */
+				2EAF754C4665B5F513A769DB, /* MCNetworkManager.entitlements */
+			);
+			path = MCNetworkManager;
+			sourceTree = "<group>";
+		};
+		B6FF67EF6E71AED71D960BD1 /* Services */ = {
+			isa = PBXGroup;
+			children = (
+				335ECD097AF13526E408F034, /* AppModel.swift */
+				9BBC50701B70EE1B11C171E8, /* Clipboard.swift */
+				B36C36A62A5933E98CCCC523, /* Keychain.swift */
+				3BE8B3F7A296C670500C5863, /* MinecraftPing.swift */
+				13428E1BA181E3E159AA4B3F, /* Monitor.swift */
+				407D6C328F4FCDCB90AD9FF9, /* Provisioner.swift */
+				48BC74B1FB07501AE83EB2E1, /* SSHService.swift */
+				7A118B48B3544A613B2C0AF6, /* SyncClient.swift */
+				5B2D7D2802DD428B287906F1, /* VaultCrypto.swift */
+			);
+			path = Services;
+			sourceTree = "<group>";
+		};
+		BF7A3AAF02871706FF49CC90 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				8EFC68BD5847CDDC18E14122, /* Models.swift */
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
+		E7F3EA3824E2DA681934A787 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				8978FDA03FA684199AB7FC4E, /* MCNetworkManager.app */
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		E8863EA338BDDA3F6A395169 /* MCNetworkManager */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 48CD52030A857B6853436E0B; /* Build configuration list for PBXNativeTarget "MCNetworkManager" */
+			buildPhases = (
+				C1E47AFBB9C116D801C9E6EC, /* Sources */
+				1C547B14509C4070E364B965, /* Frameworks */
+				276A0B248D8B83D68CE5369A, /* Resources */
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = MCNetworkManager;
+			packageProductDependencies = (
+				350875B4080A184826DF5BBC, /* Citadel */
+				BA636B2CBE5525F98BEDD698, /* SwiftTerm */
+				646C3155195D423011424BC3, /* NIOCore */
+				9C0FAD7ED8572BCEE7EA12E9, /* NIOSSH */
+			);
+			productName = MCNetworkManager;
+			productReference = 8978FDA03FA684199AB7FC4E; /* MCNetworkManager.app */
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		BF78ACA343CB914146DE7D3F /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = 1;
+				LastSwiftUpdateCheck = 1600;
+				LastUpgradeCheck = 1600;
+				TargetAttributes = {
+					E8863EA338BDDA3F6A395169 /* MCNetworkManager */ = {
+						CreatedOnToolsVersion = 16.0;
+					};
+				};
+			};
+			buildConfigurationList = 5CCE8D57471EBF459D99ADDE; /* Build configuration list for PBXProject "MCNetworkManager" */
+			compatibilityVersion = "Xcode 14.0";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = 3F402FA57D1E2C58E18A4993; /*  */
+			packageReferences = (
+				F270C43AB2E9194ABB8C57B6, /* XCRemoteSwiftPackageReference "Citadel" */
+				BF031C97E9E9CDB773884B48, /* XCRemoteSwiftPackageReference "SwiftTerm" */
+				F3A562353B77443771690895, /* XCRemoteSwiftPackageReference "swift-nio" */
+				3AD1CBEBA9DC7B9A713788A1, /* XCRemoteSwiftPackageReference "swift-nio-ssh" */
+			);
+			productRefGroup = E7F3EA3824E2DA681934A787; /* Products */
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				E8863EA338BDDA3F6A395169, /* MCNetworkManager */
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		276A0B248D8B83D68CE5369A /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				4B76B99D72DD19489820D148, /* provision.sh in Resources */
+				657FB64554870F52ABF232E0, /* Assets.xcassets in Resources */
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		C1E47AFBB9C116D801C9E6EC /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				5C5351A3E5F6A4B8F677ADC6, /* Models.swift in Sources */
+				EC0D5B563685FE60D77CA8F5, /* AppModel.swift in Sources */
+				CD3DE27D0C96A6FA28A6C9F4, /* Clipboard.swift in Sources */
+				A5195774FA3AF9FFD6147EC9, /* Keychain.swift in Sources */
+				2FC44A448EDAEE01754891A3, /* MinecraftPing.swift in Sources */
+				C8BBBE659152666B9BF21A5C, /* Monitor.swift in Sources */
+				1689FC56C7FF14885483DC6E, /* Provisioner.swift in Sources */
+				29A799BD5CB8CA3612C29E81, /* SSHService.swift in Sources */
+				8AF7FDF0CB42F71CFFF00101, /* SyncClient.swift in Sources */
+				4F876DB0DC724492437DB459, /* VaultCrypto.swift in Sources */
+				B5EC062792C62B7F54E52D95, /* AccountView.swift in Sources */
+				618E710A115E6CA2C9E5893B, /* ContentView.swift in Sources */
+				21490E5F48E646FECEA60DA3, /* DashboardView.swift in Sources */
+				095B43D2BD277BA475E241A5, /* InstallView.swift in Sources */
+				CE8AF37646E7ABC9390613F3, /* NetworkView.swift in Sources */
+				103313D91574F36015782CEC, /* NodesView.swift in Sources */
+				B6ABC5F64AC10F1036CCB4D9, /* TerminalsView.swift in Sources */
+				B285590E34A2F7EB083B4E23, /* MCNetworkManagerApp.swift in Sources */
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin XCBuildConfiguration section */
+		2C0B2CA7AB801C069AA71D22 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				COPY_PHASE_STRIP = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_NO_COMMON_BLOCKS = YES;
+				MACOSX_DEPLOYMENT_TARGET = 15.0;
+				SDKROOT = macosx;
+				SWIFT_VERSION = 5.0;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_TESTABILITY = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				ONLY_ACTIVE_ARCH = YES;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+			};
+			name = Debug;
+		};
+		64576EF41033D72E77CE92EF /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				COPY_PHASE_STRIP = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_NO_COMMON_BLOCKS = YES;
+				MACOSX_DEPLOYMENT_TARGET = 15.0;
+				SDKROOT = macosx;
+				SWIFT_VERSION = 5.0;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+			};
+			name = Release;
+		};
+		A95B60781C3061D868CE3363 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = MCNetworkManager/MCNetworkManager.entitlements;
+				CODE_SIGN_IDENTITY = "-";
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				CURRENT_PROJECT_VERSION = 1;
+				ENABLE_HARDENED_RUNTIME = YES;
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = MCNetworkManager/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.example.MCNetworkManager;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+			};
+			name = Release;
+		};
+		D7B54515A7722C3707FA74E9 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = MCNetworkManager/MCNetworkManager.entitlements;
+				CODE_SIGN_IDENTITY = "-";
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				CURRENT_PROJECT_VERSION = 1;
+				ENABLE_HARDENED_RUNTIME = YES;
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = MCNetworkManager/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.example.MCNetworkManager;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+			};
+			name = Debug;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		48CD52030A857B6853436E0B /* Build configuration list for PBXNativeTarget "MCNetworkManager" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				D7B54515A7722C3707FA74E9, /* Debug */
+				A95B60781C3061D868CE3363, /* Release */
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		5CCE8D57471EBF459D99ADDE /* Build configuration list for PBXProject "MCNetworkManager" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				2C0B2CA7AB801C069AA71D22, /* Debug */
+				64576EF41033D72E77CE92EF, /* Release */
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		3AD1CBEBA9DC7B9A713788A1 /* XCRemoteSwiftPackageReference "swift-nio-ssh" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/Wellz26/swift-nio-ssh.git";
+			requirement = {
+				kind = versionRange;
+				minimumVersion = 0.3.4;
+				maximumVersion = 0.4.0;
+			};
+		};
+		BF031C97E9E9CDB773884B48 /* XCRemoteSwiftPackageReference "SwiftTerm" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/migueldeicaza/SwiftTerm.git";
+			requirement = {
+				kind = branch;
+				branch = main;
+			};
+		};
+		F270C43AB2E9194ABB8C57B6 /* XCRemoteSwiftPackageReference "Citadel" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/orlandos-nl/Citadel.git";
+			requirement = {
+				kind = branch;
+				branch = main;
+			};
+		};
+		F3A562353B77443771690895 /* XCRemoteSwiftPackageReference "swift-nio" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/apple/swift-nio.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 2.81.0;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		350875B4080A184826DF5BBC /* Citadel */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = F270C43AB2E9194ABB8C57B6; /* XCRemoteSwiftPackageReference "Citadel" */
+			productName = Citadel;
+		};
+		646C3155195D423011424BC3 /* NIOCore */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = F3A562353B77443771690895; /* XCRemoteSwiftPackageReference "swift-nio" */
+			productName = NIOCore;
+		};
+		9C0FAD7ED8572BCEE7EA12E9 /* NIOSSH */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 3AD1CBEBA9DC7B9A713788A1; /* XCRemoteSwiftPackageReference "swift-nio-ssh" */
+			productName = NIOSSH;
+		};
+		BA636B2CBE5525F98BEDD698 /* SwiftTerm */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = BF031C97E9E9CDB773884B48; /* XCRemoteSwiftPackageReference "SwiftTerm" */
+			productName = SwiftTerm;
+		};
+/* End XCSwiftPackageProductDependency section */
+	};
+	rootObject = BF78ACA343CB914146DE7D3F /* Project object */;
+}

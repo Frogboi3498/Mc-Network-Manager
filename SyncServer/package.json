@@ -1,0 +1,13 @@
+{
+  "name": "mcnm-sync-server",
+  "version": "1.0.0",
+  "description": "Self-hosted, zero-knowledge account and vault sync server for MC Network Manager",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "test": "node --test test/*.test.js"
+  },
+  "engines": { "node": ">=18" },
+  "license": "MIT",
+  "private": true
+}
