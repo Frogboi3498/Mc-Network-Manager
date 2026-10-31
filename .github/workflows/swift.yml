@@ -1,4 +1,4 @@
-name: Xcode Build
+name: Xcode Build and Archive
 
 on:
   push:
@@ -15,5 +15,24 @@ jobs:
       uses: actions/checkout@v4
 
     - name: Build Framework for macOS
-      # Appended -skipPackagePluginValidation flag to explicitly permit compilation blocks inside SwiftTerm
       run: xcodebuild clean build -project MCNetworkManager.xcodeproj -scheme "MCNetworkManager" -destination 'platform=macOS' -skipPackagePluginValidation CODE_SIGNING_ALLOWED=NO
+
+    - name: Locate and Package Build Product
+      run: |
+        # Find where Xcode placed the compiled framework output
+        BUILD_DIR=$(xcodebuild -project MCNetworkManager.xcodeproj -scheme "MCNetworkManager" -showBuildSettings | grep -m 1 "BUILT_PRODUCTS_DIR" | awk '{print $3}')
+        
+        echo "Built products directory is at: $BUILD_DIR"
+        
+        # Create a directory to stage our download files
+        mkdir -p ./download-payload
+        
+        # Copy everything compiled (frameworks, binaries) into our folder
+        cp -R "$BUILD_DIR/" ./download-payload/
+
+    - name: Upload Build Artifact for Download
+      uses: actions/upload-artifact@v4
+      with:
+        name: MCNetworkManager-macOS-Build
+        path: ./download-payload/
+        if-no-files-found: error
