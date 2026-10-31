@@ -1,7 +1,7 @@
 import SwiftUI
 
 enum SidebarItem: String, CaseIterable, Identifiable, Hashable {
-    case dashboard, network, nodes, install, terminals, account
+    case dashboard, network, nodes, install, files, terminals, account
 
     var id: String { rawValue }
 
@@ -11,6 +11,7 @@ enum SidebarItem: String, CaseIterable, Identifiable, Hashable {
         case .network: return "Network"
         case .nodes: return "Nodes"
         case .install: return "Install"
+        case .files: return "Files"
         case .terminals: return "Terminals"
         case .account: return "Account"
         }
@@ -22,6 +23,7 @@ enum SidebarItem: String, CaseIterable, Identifiable, Hashable {
         case .network: return "point.3.connected.trianglepath.dotted"
         case .nodes: return "server.rack"
         case .install: return "arrow.down.circle"
+        case .files: return "folder"
         case .terminals: return "terminal"
         case .account: return "person.crop.circle"
         }
@@ -41,6 +43,8 @@ struct ContentView: View {
                     }
                 }
                 Section("Tools") {
+                    Label(SidebarItem.files.title, systemImage: SidebarItem.files.symbol)
+                        .tag(SidebarItem.files)
                     Label(SidebarItem.terminals.title, systemImage: SidebarItem.terminals.symbol)
                         .tag(SidebarItem.terminals)
                 }
@@ -57,6 +61,7 @@ struct ContentView: View {
             case .network: NetworkView()
             case .nodes: NodesView()
             case .install: InstallView()
+            case .files: FilesView()
             case .terminals: TerminalsView()
             case .account: AccountView()
             }
@@ -75,31 +80,20 @@ struct ContentView: View {
     }
 }
 
-/// Small status line at the bottom of the sidebar.
-struct SyncBadge: View {
+// MARK: - Sync badge
+
+private struct SyncBadge: View {
     @Environment(AppModel.self) private var app
 
     var body: some View {
         HStack(spacing: 8) {
-            Image(systemName: symbol)
-                .foregroundStyle(tint)
-                .accessibilityHidden(true)
+            Circle().fill(tint).frame(width: 8, height: 8)
             Text(text)
-                .font(.footnote)
+                .font(.caption)
                 .foregroundStyle(.secondary)
                 .lineLimit(2)
-            Spacer(minLength: 0)
         }
-        .accessibilityElement(children: .combine)
-    }
-
-    private var symbol: String {
-        switch app.syncState {
-        case .localOnly: return "icloud.slash"
-        case .idle: return "checkmark.icloud"
-        case .syncing: return "arrow.triangle.2.circlepath.icloud"
-        case .failed: return "exclamationmark.icloud"
-        }
+        .frame(maxWidth: .infinity, alignment: .leading)
     }
 
     private var tint: Color {

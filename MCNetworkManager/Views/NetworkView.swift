@@ -2,6 +2,8 @@ import SwiftUI
 
 struct NetworkView: View {
     @Environment(AppModel.self) private var app
+    @State private var selectedServerID: UUID?
+    @State private var showingEditServers = false
 
     var body: some View {
         @Bindable var app = app
@@ -18,15 +20,49 @@ struct NetworkView: View {
                     .help("The one port players connect to")
             }
 
+            // MARK: Servers section
             Section {
-                ForEach($app.vault.plan.servers) { $server in
-                    ServerEditor(server: $server, nodes: app.vault.nodes, customMods: app.vault.customMods) {
-                        app.vault.plan.servers.removeAll { $0.id == server.id }
+                if app.vault.plan.servers.isEmpty {
+                    // Empty state – original buttons
+                    HStack {
+                        Button { addServer() } label: { Label("Add server", systemImage: "plus") }
+                        Button("Use Lobby + Survival + Creative") { useTemplate() }
                     }
-                }
-                HStack {
-                    Button { addServer() } label: { Label("Add server", systemImage: "plus") }
-                    Button("Use Lobby + Survival + Creative") { useTemplate() }
+                } else {
+                    // Tabs for each server
+                    VStack(alignment: .leading, spacing: 12) {
+                        // Tab picker
+                        Picker("Server", selection: Binding(
+                            get: { selectedServerID ?? app.vault.plan.servers.first?.id },
+                            set: { selectedServerID = $0 }
+                        )) {
+                            ForEach(app.vault.plan.servers) { server in
+                                Text(server.name.isEmpty ? "Server" : server.name)
+                                    .tag(UUID?.some(server.id))
+                            }
+                        }
+                        .pickerStyle(.segmented)
+
+                        // Editor for the selected server
+                        if let id = selectedServerID ?? app.vault.plan.servers.first?.id,
+                           let index = app.vault.plan.servers.firstIndex(where: { $0.id == id }) {
+                            ServerEditor(
+                                server: $app.vault.plan.servers[index],
+                                nodes: app.vault.nodes,
+                                customMods: app.vault.customMods,
+                                showDelete: false
+                            ) {
+                                // delete handled in the Edit Servers sheet
+                            }
+                        }
+
+                        // Edit whole set
+                        Button {
+                            showingEditServers = true
+                        } label: {
+                            Label("Edit servers…", systemImage: "list.bullet.rectangle")
+                        }
+                    }
                 }
             } header: {
                 Text("Servers")
@@ -49,10 +85,9 @@ struct NetworkView: View {
                 }
                 switch app.vault.plan.networking {
                 case .none:
-                    Text("Only devices on the same network can join.")
-                        .font(.callout).foregroundStyle(.secondary)
+                    EmptyView()
                 case .tailscale:
-                    TextField("Tailscale machine name", text: $app.vault.plan.tailscaleHostname, prompt: Text("Optional"))
+                    TextField("Tailscale hostname", text: $app.vault.plan.tailscaleHostname, prompt: Text("Optional"))
                     Text("Installs Tailscale on the proxy node and signs it in. Friends join by installing Tailscale and accepting an invite to your tailnet (or you can share the machine with them from the Tailscale admin page). Nobody needs router changes.")
                         .font(.callout).foregroundStyle(.secondary)
                 case .upnp:
@@ -89,6 +124,98 @@ struct NetworkView: View {
         .navigationTitle("Network")
         .onChange(of: app.vault.plan) { _, _ in app.commit() }
         .onChange(of: app.vault.customMods) { _, _ in app.commit() }
+        .onChange(of: app.vault.plan.servers) { _, newServers in
+            // Keep selection valid
+            if let id = selectedServerID, !newServers.contains(where: { $0.id == id }) {
+                selectedServerID = newServers.first?.id
+            }
+            if selectedServerID == nil {
+                selectedServerID = newServers.first?.id
+            }
+        }
+        .sheet(isPresented: $showingEditServers) {
+            EditServersSheet()
+        }
+    }
+
+    private func addServer() {
+        let used = Set(app.vault.plan.servers.map(\.port))
+        var port = 30066
+        while used.contains(port) { port += 1 }
+        let node = app.vault.nodes.first?.id
+        let newServer = ServerPlan(
+            name: "server\(app.vault.plan.servers.count + 1)",
+            gameMode: .survival,
+            port: port,
+            memoryMB: 2048,
+            nodeID: node
+        )
+        app.vault.plan.servers.append(newServer)
+        selectedServerID = newServer.id
+    }
+
+    private func useTemplate() {
+        let node = app.vault.nodes.first?.id
+        var template = NetworkPlan.template()
+        template.servers = template.servers.map { var s = $0; s.nodeID = node; return s }
+        app.vault.plan.servers = template.servers
+        app.vault.plan.proxyNodeID = app.vault.plan.proxyNodeID ?? node
+        selectedServerID = app.vault.plan.servers.first?.id
+    }
+}
+
+// MARK: - Edit Servers Sheet (manage the whole set)
+
+private struct EditServersSheet: View {
+    @Environment(AppModel.self) private var app
+    @Environment(\.dismiss) private var dismiss
+
+    var body: some View {
+        @Bindable var app = app
+        NavigationStack {
+            List {
+                ForEach($app.vault.plan.servers) { $server in
+                    VStack(alignment: .leading, spacing: 8) {
+                        TextField("Name", text: $server.name)
+                        HStack {
+                            Picker("Mode", selection: $server.gameMode) {
+                                ForEach(GameMode.allCases) { Text($0.title).tag($0) }
+                            }
+                            TextField("Port", value: $server.port, format: .number.grouping(.never))
+                                .frame(width: 80)
+                        }
+                    }
+                    .padding(.vertical, 4)
+                }
+                .onDelete { indexSet in
+                    app.vault.plan.servers.remove(atOffsets: indexSet)
+                }
+                .onMove { from, to in
+                    app.vault.plan.servers.move(fromOffsets: from, toOffset: to)
+                }
+
+                Section {
+                    Button {
+                        addServer()
+                    } label: {
+                        Label("Add server", systemImage: "plus")
+                    }
+                    Button("Use Lobby + Survival + Creative") {
+                        useTemplate()
+                    }
+                }
+            }
+            .navigationTitle("Edit Servers")
+            .toolbar {
+                ToolbarItem(placement: .cancellationAction) {
+                    Button("Done") { dismiss() }
+                }
+                ToolbarItem(placement: .primaryAction) {
+                    EditButton()
+                }
+            }
+        }
+        .frame(minWidth: 420, minHeight: 380)
     }
 
     private func addServer() {
@@ -110,14 +237,17 @@ struct NetworkView: View {
     }
 }
 
+// MARK: - Server Editor
+
 private struct ServerEditor: View {
     @Binding var server: ServerPlan
     let nodes: [NodeProfile]
     let customMods: [String]
+    var showDelete: Bool = true
     var onDelete: () -> Void
 
     var body: some View {
-        DisclosureGroup {
+        Group {
             Picker("Game mode", selection: $server.gameMode) {
                 ForEach(GameMode.allCases) { Text($0.title).tag($0) }
             }
@@ -138,12 +268,8 @@ private struct ServerEditor: View {
                     modToggle(slug: slug, title: slug)
                 }
             }
-            Button("Remove server", role: .destructive, action: onDelete)
-        } label: {
-            HStack {
-                TextField("Name", text: $server.name).textFieldStyle(.plain).font(.headline)
-                Spacer()
-                Text(server.gameMode.title).foregroundStyle(.secondary)
+            if showDelete {
+                Button("Remove server", role: .destructive, action: onDelete)
             }
         }
     }
@@ -158,6 +284,8 @@ private struct ServerEditor: View {
         ))
     }
 }
+
+// MARK: - Custom Mods Editor
 
 private struct CustomModsEditor: View {
     @Binding var mods: [String]
