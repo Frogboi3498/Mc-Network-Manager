@@ -15,5 +15,5 @@ jobs:
       uses: actions/checkout@v4
 
     - name: Build Framework
-      # This explicitly uses your project name and the correct scheme
-      run: xcodebuild clean build -project MCNetworkManager.xcodeproj -scheme "MCNetworkManager" -destination 'platform=iOS Simulator,name=iPhone 16' CODE_SIGNING_ALLOWED=NO
+      # Changed destination from iOS Simulator to macOS
+      run: xcodebuild clean build -project MCNetworkManager.xcodeproj -scheme "MCNetworkManager" -destination 'platform=macOS' CODE_SIGNING_ALLOWED=NO
