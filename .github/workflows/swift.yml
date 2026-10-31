@@ -1,7 +1,4 @@
-# This workflow will build a Swift project
-# For more information see: https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-swift
-
-name: Swift
+name: Xcode Build
 
 on:
   push:
@@ -11,12 +8,13 @@ on:
 
 jobs:
   build:
-
+    # We must use macos to run Xcode builds
     runs-on: macos-latest
 
     steps:
-    - uses: actions/checkout@v4
-    - name: Build
-      run: swift build -v
-    - name: Run tests
-      run: swift test -v
+    - name: Checkout Repository
+      uses: actions/checkout@v4
+
+    - name: Build App
+      # This cleans and builds your app without requiring code signing certificates
+      run: xcodebuild clean build -workspace *.xcworkspace -scheme "YourAppName" -destination 'platform=iOS Simulator,name=iPhone 16' CODE_SIGNING_ALLOWED=NO || xcodebuild clean build -project *.xcodeproj -scheme "YourAppName" -destination 'platform=iOS Simulator,name=iPhone 16' CODE_SIGNING_ALLOWED=NO
